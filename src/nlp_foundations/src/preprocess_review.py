@@ -24,15 +24,18 @@ reviews = [
     "Strong visuals, but the story could be tighter."
 ]
 
+def preprocess(data = reviews):
+    cleaned = [clean_text(review) for review in data]
+    tokens = [word_tokenize(text) for text in cleaned]
+    filtered = [[word for word in review if word not in stop_words] for review in tokens]
+    lemmatized = [[lemmatizer.lemmatize(w) for w in review] for review in filtered]
+    return cleaned, tokens, filtered, lemmatized
 
-cleaned = [clean_text(review) for review in reviews]
-tokens = [word_tokenize(text) for text in cleaned]
-filtered = [[word for word in review if word not in stop_words] for review in tokens]
-lemmatized = [[lemmatizer.lemmatize(w) for w in review] for review in filtered]
-
-print("\n")
-print(f"\nOriginal:\n{reviews}")
-print(f"\nCleaned:\n{cleaned}")
-print(f"\nTokens:\n{tokens}")
-print(f"\nFiltered:\n{filtered}")
-print(f"\nLemmatized:\n{lemmatized}")
+if __name__=="__main__":
+    cleaned, tokens, filtered, lemmatized = preprocess()
+    print("\n")
+    print(f"\nOriginal:\n{reviews}")
+    print(f"\nCleaned:\n{cleaned}")
+    print(f"\nTokens:\n{tokens}")
+    print(f"\nFiltered:\n{filtered}")
+    print(f"\nLemmatized:\n{lemmatized}")
