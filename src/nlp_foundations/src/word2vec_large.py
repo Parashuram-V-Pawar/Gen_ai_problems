@@ -41,6 +41,7 @@ def word2vec():
     )
     logging.info("Model created....")
     print(model.wv.most_similar(('ranveer')))
+    model.save("word2vec.model")
 
 if __name__ == "__main__":
     word2vec()
