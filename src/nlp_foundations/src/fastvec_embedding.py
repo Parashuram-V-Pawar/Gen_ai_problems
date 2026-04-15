@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 from gensim.models import Word2Vec, FastText
 from nltk.tokenize import word_tokenize
 from config.nltk_setup import download_nltk_resources
@@ -17,7 +18,8 @@ reviews = [
 
 def compare_similarity():
     processed = [word_tokenize(text.lower()) for text in reviews]
-
+    processed = processed*200
+    
     ft_model = FastText(
         sentences=processed,
         vector_size=100,
@@ -27,15 +29,15 @@ def compare_similarity():
     )
 
     print("Word2Vec similarity:")
-    print(w2v_model.wv.similarity("ranveer", "performance"))
+    print(f"{w2v_model.wv.similarity('ranveer', 'performance'):.3f}")
 
     print("\nFastText similarity:")
-    print(ft_model.wv.similarity("ranveer", "performance"))
+    print(f"{ft_model.wv.similarity('ranveer', 'performance'):.3f}")
 
     print("\nFastText handles unseen word:")
-    print(ft_model.wv["feeling"])
+    print(np.round(ft_model.wv['feeling'],3))
     try:
-        print(w2v_model.wv["feeling"])
+        print(np.round(w2v_model.wv['feeling'],3))
     except Exception as e:
         print("\nWord2Vec error:", e)
 
